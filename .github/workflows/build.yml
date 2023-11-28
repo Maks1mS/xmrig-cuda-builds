@@ -34,7 +34,6 @@ jobs:
           mkdir build
           cd build
           cmake .. -DCUDA_LIB=/usr/local/cuda/lib64/stubs/libcuda.so
-          cmake .. -DXMRIG_DEPS=scripts/deps -DBUILD_STATIC=ON
           make -j$(nproc)
 
       - name: Archive production artifacts
