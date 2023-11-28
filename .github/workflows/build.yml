@@ -1,0 +1,38 @@
+name: Build
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  build:
+    strategy:
+      matrix:
+        cuda_version: [12.3.0, 12.2.2, 11.6.1]
+        os: [rockylinux8]
+    runs-on: ubuntu-latest
+    container:
+      image: nvidia/cuda:${{ matrix.cuda_version }}-devel-${{ matrix.os }}
+    steps:
+      - name: Setup deps (rockylinux8)
+        if: matrix.os == 'rockylinux8'
+        run: dnf makecache && dnf groupinstall 'Development Tools' -y && dnf install cmake -y
+        
+      - name: Build
+        working-directory: xmrig
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCUDA_LIB=/usr/local/cuda/lib64/stubs/libcuda.so
+          cmake .. -DXMRIG_DEPS=scripts/deps -DBUILD_STATIC=ON
+          make -j$(nproc)
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ matrix.cuda_version }}-${{ matrix.os }}
+          path: |
+            xmrig-cuda/build/libxmrig-cu.a
+            xmrig-cuda/build/libxmrig-cuda.so
