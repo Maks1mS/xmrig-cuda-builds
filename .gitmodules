@@ -1,0 +1,3 @@
+[submodule "xmrig-cuda"]
+	path = xmrig-cuda
+	url = https://github.com/xmrig/xmrig-cuda
