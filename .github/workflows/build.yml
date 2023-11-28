@@ -21,7 +21,7 @@ jobs:
         run: dnf makecache && dnf groupinstall 'Development Tools' -y && dnf install cmake -y
         
       - name: Build
-        working-directory: xmrig
+        working-directory: xmrig-cuda
         run: |
           mkdir build
           cd build
