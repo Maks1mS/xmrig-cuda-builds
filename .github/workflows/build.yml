@@ -11,8 +11,8 @@ jobs:
     strategy:
       matrix:
         cuda_version: 
-          - 12.3.0
-          - 12.2.2
+          #- 12.3.0
+          #- 12.2.2
           - 11.6.1
         os: [rockylinux8]
     runs-on: ubuntu-latest
